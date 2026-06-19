@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SpotifyMoodAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ebd42289065e0749c041faff687e6c9c17e66cf4")]
 [assembly: System.Reflection.AssemblyProductAttribute("SpotifyMoodAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SpotifyMoodAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

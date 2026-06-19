@@ -10,5 +10,8 @@ var app = builder.Build();
 
 app.UseSwagger();
 app.UseSwaggerUI();
+app.UseDefaultFiles();  // ← tambah ni BEFORE UseStaticFiles
+app.UseStaticFiles();
 app.MapControllers();
 app.Run();
+

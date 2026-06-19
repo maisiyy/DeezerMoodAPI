@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mood Music</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #0f0f13;
+      color: #e8e6f0;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+
+    .container { max-width: 900px; margin: 0 auto; }
+
+    header { margin-bottom: 2rem; }
+    header h1 { font-size: 28px; font-weight: 600; color: #c4bfff; }
+    header p  { font-size: 14px; color: #7a7890; margin-top: 4px; }
+
+    .moods {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 1.5rem;
+    }
+
+    .mood-btn {
+      padding: 8px 20px;
+      border-radius: 20px;
+      border: 1px solid #2e2c3e;
+      background: #1a1826;
+      color: #9d99b8;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .mood-btn:hover  { border-color: #534AB7; color: #c4bfff; }
+    .mood-btn.active { background: #534AB7; border-color: #534AB7; color: #fff; }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .controls label { font-size: 13px; color: #7a7890; }
+
+    .controls select {
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid #2e2c3e;
+      background: #1a1826;
+      color: #e8e6f0;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .fetch-btn {
+      padding: 8px 22px;
+      border-radius: 8px;
+      border: none;
+      background: #534AB7;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: background .2s;
+    }
+    .fetch-btn:hover    { background: #3C3489; }
+    .fetch-btn:disabled { opacity: .5; cursor: not-allowed; }
+
+    .status {
+      font-size: 13px;
+      color: #7a7890;
+      margin-bottom: 1.2rem;
+      min-height: 20px;
+    }
+
+    .tracks {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      gap: 12px;
+    }
+
+    .track-card {
+      background: #1a1826;
+      border: 1px solid #2e2c3e;
+      border-radius: 12px;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: border-color .2s;
+    }
+    .track-card:hover { border-color: #534AB7; }
+
+    .track-top { display: flex; align-items: center; gap: 10px; }
+
+    .track-num {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: #2a2640;
+      color: #9d8fff;
+      font-size: 12px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .track-info   { flex: 1; min-width: 0; }
+    .track-name   { font-size: 14px; font-weight: 500; color: #e8e6f0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .track-artist { font-size: 12px; color: #9d99b8; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .track-album  { font-size: 11px; color: #5e5c72; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    audio {
+      width: 100%;
+      height: 32px;
+      filter: invert(1) hue-rotate(200deg) brightness(0.85);
+    }
+
+    .deezer-link {
+      font-size: 12px;
+      color: #9d8fff;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .deezer-link:hover { text-decoration: underline; }
+
+    .empty {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 3rem;
+      color: #5e5c72;
+      font-size: 14px;
+    }
+
+    .note {
+      margin-top: 2rem;
+      font-size: 12px;
+      color: #5e5c72;
+      padding: 10px 14px;
+      border: 1px solid #2e2c3e;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Mood Music</h1>
+      <p>Pick a mood, discover tracks powered by Deezer API</p>
+    </header>
+
+    <div class="moods" id="moodBtns">
+      <button class="mood-btn active" data-mood="happy">Happy</button>
+      <button class="mood-btn" data-mood="sad">Sad</button>
+      <button class="mood-btn" data-mood="chill">Chill</button>
+      <button class="mood-btn" data-mood="angry">Angry</button>
+      <button class="mood-btn" data-mood="romantic">Romantic</button>
+      <button class="mood-btn" data-mood="focus">Focus</button>
+      <button class="mood-btn" data-mood="energetic">Energetic</button>
+    </div>
+
+    <div class="controls">
+      <label>Tracks</label>
+      <select id="limitSel">
+        <option value="5">5</option>
+        <option value="10" selected>10</option>
+        <option value="15">15</option>
+      </select>
+      <button class="fetch-btn" id="fetchBtn" onclick="fetchTracks()">
+        <i class="ti ti-music"></i> Get tracks
+      </button>
+    </div>
+
+    <p class="status" id="status"></p>
+    <div class="tracks" id="trackList">
+      <div class="empty">Select a mood and hit "Get tracks"</div>
+    </div>
+
+    <p class="note">Make sure your API is running: <code>dotnet run</code> on localhost:5296</p>
+  </div>
+
+  <script>
+    let currentMood = 'happy';
+
+    document.querySelectorAll('.mood-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentMood = btn.dataset.mood;
+      });
+    });
+
+    async function fetchTracks() {
+      const btn    = document.getElementById('fetchBtn');
+      const status = document.getElementById('status');
+      const list   = document.getElementById('trackList');
+      const limit  = document.getElementById('limitSel').value;
+
+      btn.disabled = true;
+      status.textContent = 'Fetching tracks...';
+      list.innerHTML = '';
+
+      try {
+        const res = await fetch(`http://localhost:5296/api/mood?mood=${currentMood}&limit=${limit}`);
+        if (!res.ok) throw new Error(`API error: ${res.status}`);
+        const data = await res.json();
+
+        status.textContent = `${data.count} tracks found for "${data.mood}"`;
+
+        if (!data.tracks?.length) {
+          list.innerHTML = '<div class="empty">No tracks found.</div>';
+          return;
+        }
+
+        list.innerHTML = data.tracks.map((t, i) => `
+          <div class="track-card">
+            <div class="track-top">
+              <div class="track-num">${i + 1}</div>
+              <div class="track-info">
+                <div class="track-name">${t.trackName ?? 'Unknown'}</div>
+                <div class="track-artist">${t.artist ?? 'Unknown artist'}</div>
+                <div class="track-album">${t.album ?? ''}</div>
+              </div>
+            </div>
+            ${t.previewUrl
+              ? `<audio controls src="${t.previewUrl}" preload="none"></audio>`
+              : `<p style="font-size:12px;color:#5e5c72">No preview available</p>`}
+            ${t.spotifyUrl
+              ? `<a class="deezer-link" href="${t.spotifyUrl}" target="_blank"><i class="ti ti-external-link" style="font-size:13px"></i> Open on Deezer</a>`
+              : ''}
+          </div>
+        `).join('');
+
+      } catch (e) {
+        status.textContent = 'Cannot connect to API. Run: dotnet run';
+        list.innerHTML = `<div class="empty">${e.message}</div>`;
+      } finally {
+        btn.disabled = false;
+      }
+    }
+  </script>
+</body>
+</html>

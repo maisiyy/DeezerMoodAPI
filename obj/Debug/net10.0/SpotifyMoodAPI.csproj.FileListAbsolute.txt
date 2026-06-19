@@ -35,3 +35,6 @@ C:\Users\RWM21082\SpotifyMoodAPI\obj\Debug\net10.0\refint\SpotifyMoodAPI.dll
 C:\Users\RWM21082\SpotifyMoodAPI\obj\Debug\net10.0\SpotifyMoodAPI.pdb
 C:\Users\RWM21082\SpotifyMoodAPI\obj\Debug\net10.0\SpotifyMoodAPI.genruntimeconfig.cache
 C:\Users\RWM21082\SpotifyMoodAPI\obj\Debug\net10.0\ref\SpotifyMoodAPI.dll
+C:\Users\RWM21082\SpotifyMoodAPI\bin\Debug\net10.0\SpotifyMoodAPI.staticwebassets.runtime.json
+C:\Users\RWM21082\SpotifyMoodAPI\obj\Debug\net10.0\SpotifyMoodAPI.sourcelink.json
+C:\Users\RWM21082\SpotifyMoodAPI\obj\Debug\net10.0\compressed\5f1yc42u7d-{0}-jbef6atltw-jbef6atltw.gz
